@@ -1,3 +1,12 @@
-resource "aws_vpc" "network" {
-    cidr_block = var.vpc_cidr
+#1. VPC
+
+resource "aws_vpc" "vpc" {
+  cidr_block = var.Vpc_cidr_block
+  enable_dns_hostnames = true
+  enable_dns_support = true
+
+tags={
+  name=var.vpc_name
+
+}
 }
