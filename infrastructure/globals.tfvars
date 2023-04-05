@@ -1,12 +1,12 @@
 variable "owner" {
   type    = string
-  default = "us-east-1"
+  default = "CE"
 }
 
 
 variable "project" {
   type    = string
-  default = "us-east-1"
+  default = "MODULES_LIBRARY"
 }
 
 variable "tool" {
