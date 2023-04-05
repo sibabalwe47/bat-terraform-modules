@@ -20,6 +20,7 @@ variable "internet_gateway" {
 
 
 #Public and private subnets
+# First Subnets
 
 variable "public_subnet-1_cidr_block" {
   description = "CIDR block for public Subnet"
@@ -56,5 +57,43 @@ variable "private_subnet_awz" {
   description = "private subnet availability zone"
   type        = string
   default     = "us-east-1b"
->>>>>>> cd1e16651edff15568ea3b3e94d76585f8b63832
+}
+
+# Second Subnets
+
+variable "public_subnet-2_cidr_block" {
+  description = "CIDR block for public Subnet"
+  type        = string
+  default     = "10.0.3.0/24"
+}
+
+variable "public_subnet-2_name" {
+  description = "public subnet name"
+  type        = string
+  default     = "public"
+}
+
+variable "public_subnet_awz" {
+  description = "public subnet availability zone"
+  type        = string
+  default     = "us-east-1a"
+}
+
+
+variable "private_subnet-2_cidr_block" {
+  description = "CIDR block for private Subnet"
+  type        = string
+  default     = "10.0.4.0/24"
+}
+
+variable "private_subnet-2_name" {
+  description = "private subnet name"
+  type        = string
+  default     = "private"
+}
+
+variable "private_subnet_awz" {
+  description = "private subnet availability zone"
+  type        = string
+  default     = "us-east-1b"
 }

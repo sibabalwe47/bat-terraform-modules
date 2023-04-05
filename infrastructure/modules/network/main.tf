@@ -19,7 +19,9 @@ resource "aws_internet_gateway" "gw" {
 }
 
 
-#create subnets
+#create subnets 
+# First Subnets 
+
 resource "aws_subnet" "public_subnet-1" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.public_subnet-1_cidr_block
@@ -35,5 +37,25 @@ resource "aws_subnet" "private_subnet-1" {
 
   tags = {
     Name =var.private_subnet-1_name
+  }
+}
+
+# Second Subnets
+
+resource "aws_subnet" "public_subnet-2" {
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = var.public_subnet-2_cidr_block
+  availability_zone =var.public_subnet_awz
+  tags = {
+  Name = var.public_subnet-2_name }
+}
+
+resource "aws_subnet" "private_subnet-2" {
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = var.private_subnet-2_cidr_block
+  availability_zone =var.private_subnet_awz
+
+  tags = {
+    Name =var.private_subnet-2_name
   }
 }
