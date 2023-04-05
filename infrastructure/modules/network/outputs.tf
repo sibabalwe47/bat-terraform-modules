@@ -24,3 +24,13 @@ output "private_subnet_id" {
   description = "ID of the VPC private subnet"
   value       = aws_subnet.private_subnet-1.id
 }
+
+output "public_subnet_id" {
+  description = "ID of the VPC public subnet"
+  value       = aws_subnet.public_subnet-2.id
+}
+
+output "private_subnet_id" {
+  description = "ID of the VPC private subnet"
+  value       = aws_subnet.private_subnet-2.id
+}
