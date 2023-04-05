@@ -10,3 +10,30 @@ resource "aws_vpc" "vpc" {
 
   }
 }
+
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.vpc.id
+  tags = {
+    Name = var.internet_gateway
+  }
+}
+
+
+#create subnets
+resource "aws_subnet" "public_subnet-1" {
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = var.public_subnet-1_cidr_block
+  availability_zone =var.public_subnet_awz
+  tags = {
+  Name = var.public_subnet-1_name }
+}
+
+resource "aws_subnet" "private_subnet-1" {
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = var.private_subnet-1_cidr_block
+  availability_zone =var.private_subnet_awz
+
+  tags = {
+    Name =var.private_subnet-1_name
+  }
+}
