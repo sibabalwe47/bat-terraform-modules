@@ -120,3 +120,33 @@ resource "aws_iam_role_policy" "flowlog" {
   role   = aws_iam_role.flowlog.id
   policy = data.aws_iam_policy_document.flowlog.json
 }
+
+#Network ACL
+
+resource "aws_network_acl" "vaya_network_acl" {
+  vpc_id = aws_vpc.vpc.id
+
+  egress {
+    protocol   = "-1"           #Allows all protocols (TCP, UDP, ICMP)
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"    #Allowing All IP Addresses
+    from_port  = 0              #From All Port Ranges
+    to_port    = 0
+  }
+
+  ingress {
+    protocol   = "-1"           #Allows all protocols (TCP, UDP, ICMP)
+    rule_no    = 200
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"    #Allowing All IP Addresses
+    from_port  = 0              #From All Port Ranges
+    to_port    = 0
+  }
+    tags = {
+      
+    Name = "vaya_NACL"
+
+    }
+  
+}

@@ -61,6 +61,11 @@ variable "public_subnet-2_name" {
   default     = "public"
 }
 
+variable "public_subnet_awz" {
+  description = "public subnet availability zone"
+  type        = string
+  default     = "us-east-1a"
+}
 
 # variable "private_subnet-2_cidr_block" {
 #   description = "CIDR block for private Subnet"
