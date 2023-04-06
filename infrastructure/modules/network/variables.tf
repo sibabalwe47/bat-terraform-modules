@@ -31,3 +31,17 @@ variable "route_table_cidr" {
 
   description = "cdirblock for route table"
 }
+
+variable "route_table" {
+  type    = string
+  default = "vaya.route"
+
+  description = "route table name tag"
+}
+
+variable "security_group" {
+  type    = string
+  default = "allow_tls"
+
+  description = "security_group name tag"
+}

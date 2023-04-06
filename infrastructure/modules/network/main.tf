@@ -27,13 +27,13 @@ resource "aws_subnet" "private_subnets" {
   count = 2 #create 2 private subnets
 
   vpc_id     = aws_vpc.vpc.id
-  cidr_block = cidrsubnet(var.Vpc_cidr_block, 8, length(local.azs)+ count.index) #generate unique CIDR blocks for subnets-different index based on index count
+  cidr_block = cidrsubnet(var.Vpc_cidr_block, 8, length(local.azs) + count.index) #generate unique CIDR blocks for subnets-different index based on index count
   #(...length(local.azs)+ count.index )to prevent cdir_block conflict
 
-  availability_zone = local.azs[1]  #availability zone for the subnet
+  availability_zone = local.azs[1] #availability zone for the subnet
 
   tags = {
-    Name = "private_subnet-${count.index + 0}"  #private subnet 1 and 2 names
+    Name = "private_subnet-${count.index + 0}" #private subnet 1 and 2 names
   }
 }
 
@@ -141,18 +141,47 @@ resource "aws_iam_role_policy" "flowlog" {
 resource "aws_route_table" "vaya_route" {
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name= "vaya.rt"
+
+    Name = var.route_table
   }
 
 }
 
 resource "aws_route" "default_route" {
-  route_table_id = aws_route_table.vaya_route.id
-  destination_cidr_block =var.route_table_cidr
-  gateway_id = aws_internet_gateway.gw.id
+  route_table_id         = aws_route_table.vaya_route.id
+  destination_cidr_block = var.route_table_cidr
+  gateway_id             = aws_internet_gateway.gw.id
 }
 
 resource "aws_route_table_association" "route_assoc" {
   gateway_id     = aws_internet_gateway.gw.id
   route_table_id = aws_route_table.vaya_route.id
+}
+
+
+resource "aws_security_group" "allow_tls" {
+  name        = "allow_tls"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    description      = "TLS from VPC"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.vpc.cidr_block]
+    ipv6_cidr_blocks = [aws_vpc.vpc.ipv6_cidr_block]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = var.security_group
+  }
 }
