@@ -25,7 +25,7 @@ resource "aws_internet_gateway" "gw" {
 resource "aws_subnet" "public_subnet-1" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.public_subnet-1_cidr_block
-  availability_zone =var.public_subnet_awz
+  availability_zone = var.availability_zone[0] #for us-east-1a
   tags = {
   Name = var.public_subnet-1_name }
 }
@@ -33,10 +33,11 @@ resource "aws_subnet" "public_subnet-1" {
 resource "aws_subnet" "private_subnet-1" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.private_subnet-1_cidr_block
-  availability_zone =var.private_subnet_awz
+
+  availability_zone = var.availability_zone[1] #for us-east-1b
 
   tags = {
-    Name =var.private_subnet-1_name
+    Name = var.private_subnet-1_name
   }
 }
 
@@ -45,7 +46,7 @@ resource "aws_subnet" "private_subnet-1" {
 resource "aws_subnet" "public_subnet-2" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.public_subnet-2_cidr_block
-  availability_zone =var.public_subnet_awz
+  availability_zone = var.public_subnet_awz
   tags = {
   Name = var.public_subnet-2_name }
 }
@@ -53,13 +54,12 @@ resource "aws_subnet" "public_subnet-2" {
 resource "aws_subnet" "private_subnet-2" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.private_subnet-2_cidr_block
-  availability_zone =var.private_subnet_awz
+  availability_zone = var.private_subnet_awz
 
   tags = {
-    Name =var.private_subnet-2_name
+    Name = var.private_subnet-2_name
   }
 }
-
 
 # create vpc flow logs
 
@@ -88,7 +88,7 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role" "flowlog" {
-  name               =var.aws_iam_role_flow_log
+  name               = var.aws_iam_role_flow_log
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 

@@ -73,12 +73,13 @@ variable "public_subnet-2_name" {
   default     = "public"
 }
 
-variable "public_subnet_awz" {
-  description = "public subnet availability zone"
-  type        = string
-  default     = "us-east-1a"
-}
 
+
+# variable "public_subnet_awz" {
+#   description = "public subnet availability zone"
+#   type        = string
+#   default     = "us-east-1a"
+# }
 
 variable "private_subnet-2_cidr_block" {
   description = "CIDR block for private Subnet"
@@ -92,8 +93,15 @@ variable "private_subnet-2_name" {
   default     = "private"
 }
 
-variable "private_subnet_awz" {
-  description = "private subnet availability zone"
-  type        = string
-  default     = "us-east-1b"
+# variable "private_subnet_awz" {
+#   description = "private subnet availability zone"
+#   type        = string
+#   default     = "us-east-1b"
+# }
+
+
+variable "availability_zone" {
+    description = "This stores AZ 1a and AZ 1b"
+    type = list(string)
+    default = ["us-east-1a", "us-east-1b"]
 }
