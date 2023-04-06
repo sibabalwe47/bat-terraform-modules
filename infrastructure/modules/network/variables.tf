@@ -18,49 +18,9 @@ variable "internet_gateway" {
   default     = "Vaya_int_gateway"
 }
 
-
-#Public and private subnets
-# First Subnets
-
-
-# variable "public_subnet-1a_name" {
-#   description = "public subnet name"
-#   type        = string
-#   default     = "public"
-# }
-
-
-
-# variable "private_subnet-1a_name" {
-#   description = "private subnet name"
-#   type        = string
-#   default     = "private"
-# }
-
-# Second Subnets
-
-# variable "public_subnet-1b_name" {
-#   description = "public subnet name"
-#   type        = string
-#   default     = "public"
-# }
-
-# variable "private_subnet-1b_name" {
-#   description = "private subnet name"
-#   type        = string
-#   default     = "private"
-# }
-
+# availability zones
 data "aws_availability_zones" "available" {}
 
 locals {
   azs = data.aws_availability_zones.available.names
 }
-
-# variable "subnets_cidr_blocks" {
-
-#   description = "cidr_blocks for subnets"
-#   type        = list(string)
-#   default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24", "10.0.4.0/24"]
-
-# }
