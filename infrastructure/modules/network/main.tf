@@ -19,107 +19,93 @@ resource "aws_internet_gateway" "gw" {
 }
 
 #create subnets 
-# First Subnets 
 
-resource "aws_subnet" "public_subnet-1" {
-  vpc_id = aws_vpc.vpc.id
-  # cidr_block        = var.public_subnet-1_cidr_block
-  cidr_block = var.subnets_cidr_blocks[0]
+# private Subnets created
 
-  availability_zone = var.availability_zone[0] #for us-east-1a
-  tags = {
-  Name = var.public_subnet-1_name }
-}
+resource "aws_subnet" "private_subnets" {
 
-resource "aws_subnet" "private_subnet-1" {
-  vpc_id = aws_vpc.vpc.id
-  # cidr_block = var.private_subnet-1_cidr_block
-  cidr_block = var.subnets_cidr_blocks[1]
+  count = 2 #create 2 private subnets
 
+  vpc_id     = aws_vpc.vpc.id
+  cidr_block = cidrsubnet(var.Vpc_cidr_block, 8, length(local.azs) + count.index) #generate unique CIDR blocks for subnets-different index based on index count
+  #(...length(local.azs)+ count.index )to prevent cdir_block conflict
 
-  availability_zone = var.availability_zone[1] #for us-east-1b
+  availability_zone = local.azs[1]  #availability zone for the subnet
 
   tags = {
-    Name = var.private_subnet-1_name
+    Name = "private_subnet-${count.index + 0}"  #private subnet 1 and 2 names
   }
 }
 
-# Second Subnets
 
-resource "aws_subnet" "public_subnet-2" {
+#public Subnets created
+resource "aws_subnet" "public_subnets" {
+
+  count = 2 #create 2 public subnets
+
   vpc_id = aws_vpc.vpc.id
-  # cidr_block        = var.public_subnet-2_cidr_block
-  cidr_block = var.subnets_cidr_blocks[2]
 
-  availability_zone = var.availability_zone[0]
-  tags = {
-  Name = var.public_subnet-2_name }
-}
-
-resource "aws_subnet" "private_subnet-2" {
-  vpc_id = aws_vpc.vpc.id
-  # cidr_block        = var.private_subnet-2_cidr_block
-  cidr_block = var.subnets_cidr_blocks[3]
-
-  availability_zone = var.availability_zone[1]
+  cidr_block        = cidrsubnet(var.Vpc_cidr_block, 8, count.index) #generate unique CIDR blocks for subnets-different index based on index count
+  availability_zone = local.azs[0]                                   #availability zone for the subnet
 
   tags = {
-    Name = var.private_subnet-2_name
+    Name = "public_subnet-${count.index + 0}" #public subnet 1 and public subnet 2
   }
 }
+
 
 # create vpc flow logs
 
-resource "aws_flow_log" "loggs" {
-  iam_role_arn    = aws_iam_role.flowlog.arn
-  log_destination = aws_cloudwatch_log_group.alerts.arn
-  traffic_type    = "ALL"
-  vpc_id          = aws_vpc.vpc.id
-}
+# resource "aws_flow_log" "loggs" {
+#   iam_role_arn    = aws_iam_role.flowlog.arn
+#   log_destination = aws_cloudwatch_log_group.alerts.arn
+#   traffic_type    = "ALL"
+#   vpc_id          = aws_vpc.vpc.id
+# }
 
-resource "aws_cloudwatch_log_group" "alerts" {
-  name = var.aws_cloudwatch_log
-}
+# resource "aws_cloudwatch_log_group" "alerts" {
+#   name = var.aws_cloudwatch_log
+# }
 
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
+# data "aws_iam_policy_document" "assume_role" {
+#   statement {
+#     effect = "Allow"
 
-    principals {
-      type        = "Service"
-      identifiers = ["vpc-flow-logs.amazonaws.com"]
-    }
+#     principals {
+#       type        = "Service"
+#       identifiers = ["vpc-flow-logs.amazonaws.com"]
+#     }
 
-    actions = ["sts:AssumeRole"]
-  }
-}
+#     actions = ["sts:AssumeRole"]
+#   }
+# }
 
-resource "aws_iam_role" "flowlog" {
-  name               = var.aws_iam_role_flow_log
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
-}
+# resource "aws_iam_role" "flowlog" {
+#   name               = var.aws_iam_role_flow_log
+#   assume_role_policy = data.aws_iam_policy_document.assume_role.json
+# }
 
-data "aws_iam_policy_document" "flowlog" {
-  statement {
-    effect = "Allow"
+# data "aws_iam_policy_document" "flowlog" {
+#   statement {
+#     effect = "Allow"
 
-    actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "logs:DescribeLogGroups",
-      "logs:DescribeLogStreams",
-    ]
+#     actions = [
+#       "logs:CreateLogGroup",
+#       "logs:CreateLogStream",
+#       "logs:PutLogEvents",
+#       "logs:DescribeLogGroups",
+#       "logs:DescribeLogStreams",
+#     ]
 
-    resources = ["*"]
-  }
-}
+#     resources = ["*"]
+#   }
+# }
 
-resource "aws_iam_role_policy" "flowlog" {
-  name   = "flowlog"
-  role   = aws_iam_role.flowlog.id
-  policy = data.aws_iam_policy_document.flowlog.json
-}
+# resource "aws_iam_role_policy" "flowlog" {
+#   name   = "flowlog"
+#   role   = aws_iam_role.flowlog.id
+#   policy = data.aws_iam_policy_document.flowlog.json
+# }
 
 #Network ACL
 
@@ -127,26 +113,26 @@ resource "aws_network_acl" "vaya_network_acl" {
   vpc_id = aws_vpc.vpc.id
 
   egress {
-    protocol   = "-1"           #Allows all protocols (TCP, UDP, ICMP)
+    protocol   = "-1" #Allows all protocols (TCP, UDP, ICMP)
     rule_no    = 100
     action     = "allow"
-    cidr_block = "0.0.0.0/0"    #Allowing All IP Addresses
-    from_port  = 0              #From All Port Ranges
+    cidr_block = "0.0.0.0/0" #Allowing All IP Addresses
+    from_port  = 0           #From All Port Ranges
     to_port    = 0
   }
 
   ingress {
-    protocol   = "-1"           #Allows all protocols (TCP, UDP, ICMP)
+    protocol   = "-1" #Allows all protocols (TCP, UDP, ICMP)
     rule_no    = 200
     action     = "allow"
-    cidr_block = "0.0.0.0/0"    #Allowing All IP Addresses
-    from_port  = 0              #From All Port Ranges
+    cidr_block = "0.0.0.0/0" #Allowing All IP Addresses
+    from_port  = 0           #From All Port Ranges
     to_port    = 0
   }
-    tags = {
-      
+  tags = {
+
     Name = "vaya_NACL"
 
-    }
-  
+  }
+
 }
