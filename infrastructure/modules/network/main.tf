@@ -27,7 +27,7 @@ resource "aws_subnet" "private_subnets" {
   count = 2 #create 2 private subnets
 
   vpc_id     = aws_vpc.vpc.id
-  cidr_block = cidrsubnet(var.Vpc_cidr_block, 8, length(local.azs) + count.index) #generate unique CIDR blocks for subnets-different index based on index count
+  cidr_block = cidrsubnet(var.Vpc_cidr_block, 8, length(local.azs)+ count.index) #generate unique CIDR blocks for subnets-different index based on index count
   #(...length(local.azs)+ count.index )to prevent cdir_block conflict
 
   availability_zone = local.azs[1]  #availability zone for the subnet
@@ -36,7 +36,6 @@ resource "aws_subnet" "private_subnets" {
     Name = "private_subnet-${count.index + 0}"  #private subnet 1 and 2 names
   }
 }
-
 
 #public Subnets created
 resource "aws_subnet" "public_subnets" {
@@ -137,4 +136,23 @@ resource "aws_iam_role_policy" "flowlog" {
   name   = "flowlog"
   role   = aws_iam_role.flowlog.id
   policy = data.aws_iam_policy_document.flowlog.json
+}
+
+resource "aws_route_table" "vaya_route" {
+  vpc_id = aws_vpc.vpc.id
+  tags = {
+    Name= "vaya.rt"
+  }
+
+}
+
+resource "aws_route" "default_route" {
+  route_table_id = aws_route_table.vaya_route.id
+  destination_cidr_block =var.route_table_cidr
+  gateway_id = aws_internet_gateway.gw.id
+}
+
+resource "aws_route_table_association" "route_assoc" {
+  gateway_id     = aws_internet_gateway.gw.id
+  route_table_id = aws_route_table.vaya_route.id
 }

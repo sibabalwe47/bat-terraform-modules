@@ -24,3 +24,10 @@ data "aws_availability_zones" "available" {}
 locals {
   azs = data.aws_availability_zones.available.names
 }
+
+variable "route_table_cidr" {
+  type    = string
+  default = "0.0.0.0/0"
+
+  description = "cdirblock for route table"
+}
