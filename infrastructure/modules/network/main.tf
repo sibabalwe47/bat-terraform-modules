@@ -18,21 +18,24 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
-
 #create subnets 
 # First Subnets 
 
 resource "aws_subnet" "public_subnet-1" {
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = var.public_subnet-1_cidr_block
+  vpc_id = aws_vpc.vpc.id
+  # cidr_block        = var.public_subnet-1_cidr_block
+  cidr_block = var.subnets_cidr_blocks[0]
+
   availability_zone = var.availability_zone[0] #for us-east-1a
   tags = {
   Name = var.public_subnet-1_name }
 }
 
 resource "aws_subnet" "private_subnet-1" {
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = var.private_subnet-1_cidr_block
+  vpc_id = aws_vpc.vpc.id
+  # cidr_block = var.private_subnet-1_cidr_block
+  cidr_block = var.subnets_cidr_blocks[1]
+
 
   availability_zone = var.availability_zone[1] #for us-east-1b
 
@@ -44,17 +47,21 @@ resource "aws_subnet" "private_subnet-1" {
 # Second Subnets
 
 resource "aws_subnet" "public_subnet-2" {
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = var.public_subnet-2_cidr_block
-  availability_zone = var.public_subnet_awz
+  vpc_id = aws_vpc.vpc.id
+  # cidr_block        = var.public_subnet-2_cidr_block
+  cidr_block = var.subnets_cidr_blocks[2]
+
+  availability_zone = var.availability_zone[0]
   tags = {
   Name = var.public_subnet-2_name }
 }
 
 resource "aws_subnet" "private_subnet-2" {
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = var.private_subnet-2_cidr_block
-  availability_zone = var.private_subnet_awz
+  vpc_id = aws_vpc.vpc.id
+  # cidr_block        = var.private_subnet-2_cidr_block
+  cidr_block = var.subnets_cidr_blocks[3]
+
+  availability_zone = var.availability_zone[1]
 
   tags = {
     Name = var.private_subnet-2_name

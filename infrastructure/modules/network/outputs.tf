@@ -15,22 +15,22 @@ output "gateway_id" {
 
 #  SUBNETS IDs
 
-output "public_subnet_id" {
+output "public_subnet_id_1" {
   description = "ID of the VPC public subnet"
   value       = aws_subnet.public_subnet-1.id
 }
 
-output "private_subnet_id" {
+output "private_subnet_id_1" {
   description = "ID of the VPC private subnet"
   value       = aws_subnet.private_subnet-1.id
 }
 
-output "public_subnet_id" {
+output "public_subnet_id_2" {
   description = "ID of the VPC public subnet"
   value       = aws_subnet.public_subnet-2.id
 }
 
-output "private_subnet_id" {
+output "private_subnet_id_2" {
   description = "ID of the VPC private subnet"
   value       = aws_subnet.private_subnet-2.id
 }
