@@ -24,3 +24,13 @@ data "aws_availability_zones" "available" {}
 locals {
   azs = data.aws_availability_zones.available.names
 }
+
+
+
+
+
+ variable "the_s3_bucket" {
+  description = "Name of s3 bucket"
+  type        = string
+  default     = "My bucket"
+}

@@ -53,9 +53,6 @@ resource "aws_subnet" "public_subnets" {
   }
 }
 
-
-
-
 #Network ACL
 
 resource "aws_network_acl" "vaya_network_acl" {
@@ -83,58 +80,75 @@ resource "aws_network_acl" "vaya_network_acl" {
     Name = "vaya_NACL"
 
   }
-
+ 
 }
 
 # create vpc flow logs
 
-resource "aws_flow_log" "loggs" {
-  iam_role_arn    = aws_iam_role.flowlog.arn
-  log_destination = aws_cloudwatch_log_group.alerts.arn
-  traffic_type    = "ALL"
-  vpc_id          = aws_vpc.vpc.id
+# resource "aws_flow_log" "loggs" {
+#   iam_role_arn    = aws_iam_role.flowlog.arn
+#   log_destination = aws_cloudwatch_log_group.alerts.arn
+#   traffic_type    = "ALL"
+#   vpc_id          = aws_vpc.vpc.id
+# }
+
+# resource "aws_cloudwatch_log_group" "alerts" {
+#   name = var.aws_cloudwatch_log
+# }
+
+# data "aws_iam_policy_document" "assume_role" {
+#   statement {
+#     effect = "Allow"
+
+#     principals {
+#       type        = "Service"
+#       identifiers = ["vpc-flow-logs.amazonaws.com"]
+#     }
+
+#     actions = ["sts:AssumeRole"]
+#   }
+# }
+
+# resource "aws_iam_role" "flowlog" {
+#   name               = var.aws_iam_role_flow_log
+#   assume_role_policy = data.aws_iam_policy_document.assume_role.json
+# }
+
+# data "aws_iam_policy_document" "flowlog" {
+#   statement {
+#     effect = "Allow"
+
+#     actions = [
+#       "logs:CreateLogGroup",
+#       "logs:CreateLogStream",
+#       "logs:PutLogEvents",
+#       "logs:DescribeLogGroups",
+#       "logs:DescribeLogStreams",
+#     ]
+
+#     resources = ["*"]
+#   }
+# }
+
+# resource "aws_iam_role_policy" "flowlog" {
+#   name   = "flowlog"
+#   role   = aws_iam_role.flowlog.id
+#   policy = data.aws_iam_policy_document.flowlog.json
+# }
+
+
+
+resource "aws_flow_log" "flowlogs" {
+  log_destination      = aws_s3_bucket.s3_bucket.arn
+  log_destination_type = "s3"
+  traffic_type         = "ALL"
+  vpc_id               = aws_vpc.vpc.id
 }
 
-resource "aws_cloudwatch_log_group" "alerts" {
-  name = var.aws_cloudwatch_log
-}
+resource "aws_s3_bucket" "s3_bucket" {
+  bucket = "my_s3_bucket"
 
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["vpc-flow-logs.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
+    tags = {
+    Name        =var.the_s3_bucket
   }
-}
-
-resource "aws_iam_role" "flowlog" {
-  name               = var.aws_iam_role_flow_log
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
-}
-
-data "aws_iam_policy_document" "flowlog" {
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "logs:DescribeLogGroups",
-      "logs:DescribeLogStreams",
-    ]
-
-    resources = ["*"]
-  }
-}
-
-resource "aws_iam_role_policy" "flowlog" {
-  name   = "flowlog"
-  role   = aws_iam_role.flowlog.id
-  policy = data.aws_iam_policy_document.flowlog.json
 }
