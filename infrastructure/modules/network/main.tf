@@ -18,42 +18,17 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
-#create subnets 
-
 # private Subnets created
 
 resource "aws_subnet" "private_subnets" {
 
-  count = 2 #create 2 private subnets
-
-  /*
-    Use:
-
-    count                   = length(local.azs) 
-
-    Why:
-
-    You are currently limiting the infrastructure to 2 subnets. You want to make it dynamic, so please replace
-    the hardcoded value with the length of the azs
-
-   */
+  count = length(local.azs)
 
   vpc_id     = aws_vpc.vpc.id
   cidr_block = cidrsubnet(var.Vpc_cidr_block, 8, length(local.azs) + count.index) #generate unique CIDR blocks for subnets-different index based on index count
   #(...length(local.azs)+ count.index )to prevent cdir_block conflict
 
-  availability_zone = local.azs[1] #availability zone for the subnet
-
-  /*
-    Use:
-
-    availability_zone = local.azs[count.index]
-
-    Why:
-
-    Because of the hardcoded value of 1, all your subnets are currently in the same AZ.
-
-   */
+  availability_zone = local.azs[count.index]
 
   tags = {
     Name = "private_subnet-${count.index + 0}" #private subnet 1 and 2 names
@@ -64,12 +39,12 @@ resource "aws_subnet" "private_subnets" {
 #public Subnets created
 resource "aws_subnet" "public_subnets" {
 
-  count = 2 #create 2 public subnets
+  count = length(local.azs)
 
   vpc_id = aws_vpc.vpc.id
 
-  cidr_block        = cidrsubnet(var.Vpc_cidr_block, 8, count.index) #generate unique CIDR blocks for subnets-different index based on index count
-  availability_zone = local.azs[0]                                   #availability zone for the subnet
+  cidr_block = cidrsubnet(var.Vpc_cidr_block, 8, count.index) #generate unique CIDR blocks for subnets-different index based on index count
+  availability_zone = local.azs[count.index]
 
   tags = {
     Name = "public_subnet-${count.index + 0}" #public subnet 1 and public subnet 2

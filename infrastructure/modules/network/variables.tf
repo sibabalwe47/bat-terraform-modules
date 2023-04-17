@@ -39,8 +39,6 @@ variable "the_s3_bucket" {
   default     = "My bucket"
 }
 
-
-
 variable "security_group" {
   description = "Security group name"
   type        = string
