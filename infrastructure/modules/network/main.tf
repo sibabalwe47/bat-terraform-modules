@@ -85,59 +85,6 @@ resource "aws_network_acl" "vaya_network_acl" {
 
 # create vpc flow logs
 
-# resource "aws_flow_log" "loggs" {
-#   iam_role_arn    = aws_iam_role.flowlog.arn
-#   log_destination = aws_cloudwatch_log_group.alerts.arn
-#   traffic_type    = "ALL"
-#   vpc_id          = aws_vpc.vpc.id
-# }
-
-# resource "aws_cloudwatch_log_group" "alerts" {
-#   name = var.aws_cloudwatch_log
-# }
-
-# data "aws_iam_policy_document" "assume_role" {
-#   statement {
-#     effect = "Allow"
-
-#     principals {
-#       type        = "Service"
-#       identifiers = ["vpc-flow-logs.amazonaws.com"]
-#     }
-
-#     actions = ["sts:AssumeRole"]
-#   }
-# }
-
-# resource "aws_iam_role" "flowlog" {
-#   name               = var.aws_iam_role_flow_log
-#   assume_role_policy = data.aws_iam_policy_document.assume_role.json
-# }
-
-# data "aws_iam_policy_document" "flowlog" {
-#   statement {
-#     effect = "Allow"
-
-#     actions = [
-#       "logs:CreateLogGroup",
-#       "logs:CreateLogStream",
-#       "logs:PutLogEvents",
-#       "logs:DescribeLogGroups",
-#       "logs:DescribeLogStreams",
-#     ]
-
-#     resources = ["*"]
-#   }
-# }
-
-# resource "aws_iam_role_policy" "flowlog" {
-#   name   = "flowlog"
-#   role   = aws_iam_role.flowlog.id
-#   policy = data.aws_iam_policy_document.flowlog.json
-# }
-
-
-
 resource "aws_flow_log" "flowlogs" {
   log_destination      = aws_s3_bucket.s3_bucket.arn
   log_destination_type = "s3"
@@ -151,33 +98,6 @@ resource "aws_s3_bucket" "s3_bucket" {
     tags = {
     Name        =var.the_s3_bucket
   }
-}
-
-resource "aws_iam_role" "flowlog" {
-  name               = var.aws_iam_role_flow_log
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
-}
-
-data "aws_iam_policy_document" "flowlog" {
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "logs:DescribeLogGroups",
-      "logs:DescribeLogStreams",
-    ]
-
-    resources = ["*"]
-  }
-}
-
-resource "aws_iam_role_policy" "flowlog" {
-  name   = "flowlog"
-  role   = aws_iam_role.flowlog.id
-  policy = data.aws_iam_policy_document.flowlog.json
 }
 
 resource "aws_route_table" "vaya_route" {
@@ -213,7 +133,7 @@ resource "aws_security_group" "allow_tls" {
     to_port          = 443
     protocol         = "tcp"
     cidr_blocks      = [aws_vpc.vpc.cidr_block]
-    ipv6_cidr_blocks = [aws_vpc.vpc.ipv6_cidr_block]
+    # ipv6_cidr_blocks = [aws_vpc.vpc.ipv6_cidr_block]
   }
 
   egress {

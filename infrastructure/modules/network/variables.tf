@@ -18,6 +18,13 @@ variable "internet_gateway" {
   default     = "Vaya_int_gateway"
 }
 
+
+variable "route_table_cidr" {
+  description = "The IPv4 CIDR block for route table"
+  type        = string
+  default     = "10.0.1.0/24"
+}
+
 # availability zones
 data "aws_availability_zones" "available" {}
 
@@ -30,4 +37,18 @@ variable "the_s3_bucket" {
   description = "Name of s3 bucket"
   type        = string
   default     = "My bucket"
+}
+
+
+
+variable "security_group" {
+  description = "Security group name"
+  type        = string
+  default     = "VayaSecurity"
+}
+
+variable "route_table" {
+  description = "Route table name"
+  type        = string
+  default     = "VayaRoute"
 }
