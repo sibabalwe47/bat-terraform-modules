@@ -42,9 +42,9 @@ resource "aws_subnet" "private_subnets" {
   cidr_block = cidrsubnet(var.Vpc_cidr_block, 8, length(local.azs) + count.index) #generate unique CIDR blocks for subnets-different index based on index count
   #(...length(local.azs)+ count.index )to prevent cdir_block conflict
 
-  availability_zone = local.azs[1]  #availability zone for the subnet
+  availability_zone = local.azs[1] #availability zone for the subnet
 
-    /*
+  /*
     Use:
 
     availability_zone = local.azs[count.index]
@@ -56,7 +56,7 @@ resource "aws_subnet" "private_subnets" {
    */
 
   tags = {
-    Name = "private_subnet-${count.index + 0}"  #private subnet 1 and 2 names
+    Name = "private_subnet-${count.index + 0}" #private subnet 1 and 2 names
   }
 }
 
@@ -103,7 +103,7 @@ resource "aws_network_acl" "vaya_network_acl" {
     Name = "vaya_NACL"
 
   }
- 
+
 }
 
 # create vpc flow logs
@@ -118,8 +118,8 @@ resource "aws_flow_log" "flowlogs" {
 resource "aws_s3_bucket" "s3_bucket" {
   bucket = "my_s3_bucket"
 
-    tags = {
-    Name        =var.the_s3_bucket
+  tags = {
+    Name = var.the_s3_bucket
   }
 }
 
@@ -151,11 +151,11 @@ resource "aws_security_group" "allow_tls" {
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
-    description      = "TLS from VPC"
-    from_port        = 443
-    to_port          = 443
-    protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.vpc.cidr_block]
+    description = "TLS from VPC"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
     # ipv6_cidr_blocks = [aws_vpc.vpc.ipv6_cidr_block]
   }
 
