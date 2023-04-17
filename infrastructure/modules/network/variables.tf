@@ -25,23 +25,9 @@ locals {
   azs = data.aws_availability_zones.available.names
 }
 
-variable "route_table_cidr" {
-  type    = string
-  default = "0.0.0.0/0"
 
-  description = "cdirblock for route table"
-}
-
-variable "route_table" {
-  type    = string
-  default = "vaya.route"
-
-  description = "route table name tag"
-}
-
-variable "security_group" {
-  type    = string
-  default = "allow_tls"
-
-  description = "security_group name tag"
+variable "the_s3_bucket" {
+  description = "Name of s3 bucket"
+  type        = string
+  default     = "My bucket"
 }

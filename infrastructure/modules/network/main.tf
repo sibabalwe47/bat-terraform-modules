@@ -30,12 +30,13 @@ resource "aws_subnet" "private_subnets" {
   cidr_block = cidrsubnet(var.Vpc_cidr_block, 8, length(local.azs) + count.index) #generate unique CIDR blocks for subnets-different index based on index count
   #(...length(local.azs)+ count.index )to prevent cdir_block conflict
 
-  availability_zone = local.azs[1] #availability zone for the subnet
+  availability_zone = local.azs[1]  #availability zone for the subnet
 
   tags = {
-    Name = "private_subnet-${count.index + 0}" #private subnet 1 and 2 names
+    Name = "private_subnet-${count.index + 0}"  #private subnet 1 and 2 names
   }
 }
+
 
 #public Subnets created
 resource "aws_subnet" "public_subnets" {
@@ -51,9 +52,6 @@ resource "aws_subnet" "public_subnets" {
     Name = "public_subnet-${count.index + 0}" #public subnet 1 and public subnet 2
   }
 }
-
-
-
 
 #Network ACL
 
@@ -82,32 +80,76 @@ resource "aws_network_acl" "vaya_network_acl" {
     Name = "vaya_NACL"
 
   }
-
+ 
 }
 
 # create vpc flow logs
 
-resource "aws_flow_log" "loggs" {
-  iam_role_arn    = aws_iam_role.flowlog.arn
-  log_destination = aws_cloudwatch_log_group.alerts.arn
-  traffic_type    = "ALL"
-  vpc_id          = aws_vpc.vpc.id
+# resource "aws_flow_log" "loggs" {
+#   iam_role_arn    = aws_iam_role.flowlog.arn
+#   log_destination = aws_cloudwatch_log_group.alerts.arn
+#   traffic_type    = "ALL"
+#   vpc_id          = aws_vpc.vpc.id
+# }
+
+# resource "aws_cloudwatch_log_group" "alerts" {
+#   name = var.aws_cloudwatch_log
+# }
+
+# data "aws_iam_policy_document" "assume_role" {
+#   statement {
+#     effect = "Allow"
+
+#     principals {
+#       type        = "Service"
+#       identifiers = ["vpc-flow-logs.amazonaws.com"]
+#     }
+
+#     actions = ["sts:AssumeRole"]
+#   }
+# }
+
+# resource "aws_iam_role" "flowlog" {
+#   name               = var.aws_iam_role_flow_log
+#   assume_role_policy = data.aws_iam_policy_document.assume_role.json
+# }
+
+# data "aws_iam_policy_document" "flowlog" {
+#   statement {
+#     effect = "Allow"
+
+#     actions = [
+#       "logs:CreateLogGroup",
+#       "logs:CreateLogStream",
+#       "logs:PutLogEvents",
+#       "logs:DescribeLogGroups",
+#       "logs:DescribeLogStreams",
+#     ]
+
+#     resources = ["*"]
+#   }
+# }
+
+# resource "aws_iam_role_policy" "flowlog" {
+#   name   = "flowlog"
+#   role   = aws_iam_role.flowlog.id
+#   policy = data.aws_iam_policy_document.flowlog.json
+# }
+
+
+
+resource "aws_flow_log" "flowlogs" {
+  log_destination      = aws_s3_bucket.s3_bucket.arn
+  log_destination_type = "s3"
+  traffic_type         = "ALL"
+  vpc_id               = aws_vpc.vpc.id
 }
 
-resource "aws_cloudwatch_log_group" "alerts" {
-  name = var.aws_cloudwatch_log
-}
+resource "aws_s3_bucket" "s3_bucket" {
+  bucket = "my_s3_bucket"
 
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["vpc-flow-logs.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
+    tags = {
+    Name        =var.the_s3_bucket
   }
 }
 
