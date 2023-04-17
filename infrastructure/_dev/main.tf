@@ -21,4 +21,6 @@ module "vpc_flow_logs_storage" {
   s3_bucket_name = "vpc-flow-logs-bucket-${random_id.backend_id.hex}"
 }
 
-
+module "network_module" {
+  source = "../modules/network"
+}

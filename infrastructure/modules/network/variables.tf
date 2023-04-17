@@ -19,81 +19,36 @@ variable "internet_gateway" {
 }
 
 
-#Public and private subnets
-# First Subnets
-
-variable "public_subnet-1_cidr_block" {
-  description = "CIDR block for public Subnet"
+variable "route_table_cidr" {
+  description = "The IPv4 CIDR block for route table"
   type        = string
   default     = "10.0.1.0/24"
 }
 
-variable "public_subnet-1_name" {
-  description = "public subnet name"
-  type        = string
-  default     = "public"
-}
+# availability zones
+data "aws_availability_zones" "available" {}
 
-variable "public_subnet_awz" {
-  description = "public subnet availability zone"
-  type        = string
-  default     = "us-east-1a"
+locals {
+  azs = data.aws_availability_zones.available.names
 }
 
 
-variable "private_subnet-1_cidr_block" {
-  description = "CIDR block for private Subnet"
+variable "the_s3_bucket" {
+  description = "Name of s3 bucket"
   type        = string
-  default     = "10.0.2.0/24"
-}
-
-variable "private_subnet-1_name" {
-  description = "private subnet name"
-  type        = string
-  default     = "private"
-}
-
-variable "private_subnet_awz" {
-  description = "private subnet availability zone"
-  type        = string
-  default     = "us-east-1b"
-}
-
-# Second Subnets
-
-variable "public_subnet-2_cidr_block" {
-  description = "CIDR block for public Subnet"
-  type        = string
-  default     = "10.0.3.0/24"
-}
-
-variable "public_subnet-2_name" {
-  description = "public subnet name"
-  type        = string
-  default     = "public"
-}
-
-variable "public_subnet_awz" {
-  description = "public subnet availability zone"
-  type        = string
-  default     = "us-east-1a"
+  default     = "My bucket"
 }
 
 
-variable "private_subnet-2_cidr_block" {
-  description = "CIDR block for private Subnet"
+
+variable "security_group" {
+  description = "Security group name"
   type        = string
-  default     = "10.0.4.0/24"
+  default     = "VayaSecurity"
 }
 
-variable "private_subnet-2_name" {
-  description = "private subnet name"
+variable "route_table" {
+  description = "Route table name"
   type        = string
-  default     = "private"
-}
-
-variable "private_subnet_awz" {
-  description = "private subnet availability zone"
-  type        = string
-  default     = "us-east-1b"
+  default     = "VayaRoute"
 }
