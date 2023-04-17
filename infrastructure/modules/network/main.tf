@@ -158,6 +158,7 @@ resource "aws_route_table_association" "route_assoc" {
   route_table_id = aws_route_table.vaya_route.id
 }
 
+# Security group
 
 resource "aws_security_group" "allow_tls" {
   name        = "allow_tls"
