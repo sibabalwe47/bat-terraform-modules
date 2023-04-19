@@ -33,6 +33,8 @@ locals {
 }
 
 
+
+
 variable "the_s3_bucket" {
   description = "Name of s3 bucket"
   type        = string
@@ -50,3 +52,5 @@ variable "route_table" {
   type        = string
   default     = "VayaRoute"
 }
+
+

@@ -146,3 +146,68 @@ resource "aws_security_group" "allow_tls" {
     Name = var.security_group
   }
 }
+
+#Auto-Scaling Group Launch Template
+
+resource "aws_launch_template" "asg_launch_template" {
+  name_prefix   = "asg_launch_template"
+  image_id      = "ami-0bde1eb2c18cb2abe"
+  instance_type = "t2.micro"
+  key_name      = "VW_Widows_key"
+}
+
+#Auto-Scaling Group
+
+resource "aws_autoscaling_group" "asg" {
+  
+  availability_zones = ["us-east-1a","us-east-1b"]
+   
+
+  desired_capacity   = 1
+  max_size           = 5
+  min_size           = 1
+  health_check_type  = "ELB"
+  health_check_grace_period = 300
+
+  launch_template {
+    id      = aws_launch_template.asg_launch_template.id
+    name    = "asg_launch_template"
+    version = "$Latest"
+  }
+}
+
+#Security group for the Application Load Balancer
+resource "aws_security_group" "alb_security_group" {
+  name        = "alb security group"
+  description = "enable http/https access on port 80/443"
+  vpc_id      = aws_vpc.vpc.id
+
+
+  ingress {
+    description      = "http access"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description      = "https access"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = -1
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  tags   = {
+    Name = "alb-sg"
+  }
+}
+

@@ -18,3 +18,8 @@ output "route_table_id" {
   description = "ID route table"
   value       = aws_route_table.vaya_route.id
 }
+
+output "alb_security_group" {
+  description = "ID of ALB SG"
+  value = aws_security_group.alb_security_group.id
+}
