@@ -22,7 +22,7 @@ resource "aws_internet_gateway" "gw" {
 
 resource "aws_subnet" "private_subnets" {
 
-  count = length(local.azs)
+  count = 4
 
   vpc_id     = aws_vpc.vpc.id
   cidr_block = cidrsubnet(var.Vpc_cidr_block, 8, length(local.azs) + count.index) #generate unique CIDR blocks for subnets-different index based on index count
@@ -39,7 +39,7 @@ resource "aws_subnet" "private_subnets" {
 #public Subnets created
 resource "aws_subnet" "public_subnets" {
 
-  count = length(local.azs)
+  count = 2
 
   vpc_id = aws_vpc.vpc.id
 
