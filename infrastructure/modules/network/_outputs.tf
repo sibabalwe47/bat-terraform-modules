@@ -26,6 +26,10 @@ output "public_subnet_ids" {
   value = [for subnet in aws_subnet.public_subnet : subnet.id]
 }
 
+output "private_subnet_ids" {
+  value = [for subnet in aws_subnet.private_subnet : subnet.id]
+}
+
 output "load_balancer_dns_name" {
   value = aws_lb.alb.dns_name
 }
@@ -36,4 +40,13 @@ output "load_balancer_name" {
 
 output "load_balancer_target_group_arn" {
   value = aws_lb_target_group.target_group.arn
+}
+
+output "database_security_group" {
+  value = aws_security_group.database_security_group.name
+}
+
+output "local_azs" {
+  value = data.aws_availability_zones.available
+  
 }
