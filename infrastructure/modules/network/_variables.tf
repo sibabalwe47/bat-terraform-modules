@@ -3,7 +3,6 @@
 variable "vpc_name" {
   description = "Name to be used on all the resources as identifier"
   type        = string
-  default     = "vaya_vpc"
 }
 variable "Vpc_cidr_block" {
   description = "The IPv4 CIDR block for the VPC"
@@ -54,3 +53,7 @@ variable "route_table" {
 }
 
 
+variable "vpc_flow_logs_storage" {
+  type    = string
+  default = "vpc-flow-logs-destination-20230421"
+}
