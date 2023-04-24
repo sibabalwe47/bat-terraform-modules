@@ -20,6 +20,11 @@ module "network_module" {
   vpc_name = "vayawallet-${var.environment}"
 }
 
+module "ecr_module" {
+  source              = "../modules/ecr"
+  ecr_repository_name = "vayawallet"
+}
+
 
 module "ecs_module" {
   source           = "../modules/ecs"
@@ -28,7 +33,7 @@ module "ecs_module" {
   # Task definition configuration
   ecs_cluster_task_definition_name                = "vayawallet-task-def-${var.environment}"
   ecs_cluster_task_definition_container_name      = "vayawallet-container-${var.environment}"
-  ecs_cluster_task_definition_container_image     = "siba920429/ecs-image"
+  ecs_cluster_task_definition_container_image     = "siba920429/vayawallet-img"
   ecs_cluster_task_definition_container_cpu       = 256
   ecs_cluster_task_definition_container_memory    = 512
   ecs_cluster_task_definition_container_port      = 80
