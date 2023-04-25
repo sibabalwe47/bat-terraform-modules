@@ -36,3 +36,12 @@ resource "aws_route_table_association" "public_subnets_association" {
   subnet_id      = aws_subnet.public_subnet.*.id[count.index]
   route_table_id = aws_route_table.public_route_table.id
 }
+
+resource "aws_db_subnet_group" "database_subnet_group" {
+  name = "database_subnet_group"
+  subnet_ids = [aws_subnet.private_subnet[0].id, aws_subnet.private_subnet[1].id]
+
+  tags = {
+    "Name" = "database subnet group"
+  }
+}
