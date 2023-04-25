@@ -45,5 +45,7 @@ module "database_module" {
   source = "../modules/database"
   database_security_group_id = [module.network_module.private_subnet_ids[0], module.network_module.private_subnet_ids[1]]
   database_subnet_group_name = module.network_module.database_security_group
- 
+
+
 }
+
