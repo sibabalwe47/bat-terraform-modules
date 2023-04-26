@@ -1,0 +1,23 @@
+Aim: Automaticatically rotate IAM keys every 5 day(s) on the production account.
+
+* Find all users within the account
+* Remove existing keys from all users
+* Assign new keys to all users
+* Email users their keys (last)
+
+
+AWS Services:
+
+- Cloudwatch events (eventbrigde)
+- Lambda Function
+- I AM (generates keys)
+- SES (emails - later)
+
+
+Documentation of commands we can use:
+
+
+List access keys: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-iam/classes/listaccesskeyscommand.html
+Creates access keys: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-iam/interfaces/createaccesskeycommandoutput.html
+Deleltes access keys: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-iam/classes/deleteaccesskeycommand.html
+Last used: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-iam/classes/getaccesskeylastusedcommand.html

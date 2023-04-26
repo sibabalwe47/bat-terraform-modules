@@ -51,7 +51,6 @@ output "local_azs" {
 
 }
 
-output "database_subnet_group" {
-  value = aws_db_subnet_group.database_subnet_group
-
-}
+# output "database_subnet_group" {
+#   value = aws_db_subnet_group.database_subnet_group
+# }

@@ -1,13 +1,14 @@
+const { IAMClient } = require("@aws-sdk/client-iam");
+const client = new IAMClient({ region: "us-east-1" });
+
 module.exports.rotateSecretAccessKeys = async (event) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: 'Go Serverless v3.0! Your function executed successfully!',
-        input: event,
-      },
-      null,
-      2
-    ),
+  const params = {
+    /* Your params values will go in here */
   };
+
+  try {
+    const response = await client.send(/* Your command will go in here */);
+  } catch (error) {
+    console.log("Error:", error);
+  }
 };

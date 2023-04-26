@@ -4,15 +4,16 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs18.x
-  stage: dev
+  stage: prod
   region: us-east-1
 
   # you can add statements to the Lambda function's IAM Role here
   iam:
-    role: ${file(config.json):role_arn}
+    role: arn:aws:iam::326322194317:role/multi-account-cost-report-iam-role-prod
+
 
 functions:
-  processCostUsageDataFunction:
+  rotateSecretAccessKeys:
     handler: handlers/index.rotateSecretAccessKeys
     events: 
       - eventBridge:
