@@ -46,7 +46,16 @@ output "database_security_group" {
   value = aws_security_group.database_security_group.name
 }
 
+output "availability_zones" {
+  value = data.aws_availability_zones.available.names
+}
+
+
 output "local_azs" {
   value = data.aws_availability_zones.available
-  
+}
+
+
+output "db_security_group_name" {
+  value = aws_db_subnet_group.db_subnet_group.name
 }

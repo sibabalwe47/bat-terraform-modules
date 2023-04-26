@@ -36,3 +36,17 @@ resource "aws_route_table_association" "public_subnets_association" {
   subnet_id      = aws_subnet.public_subnet.*.id[count.index]
   route_table_id = aws_route_table.public_route_table.id
 }
+
+
+/*
+ *  DB subnet group
+ */
+resource "aws_db_subnet_group" "db_subnet_group" {
+  name       = "${var.vpc_name}-db-group-${random_id.backend_id.dec}"
+  subnet_ids = [for subnet in aws_subnet.private_subnet : subnet.id]
+
+  tags = {
+    "Name" = "${var.vpc_name}-db-group-${random_id.backend_id.dec}"
+    source = "TERRAFORM"
+  }
+}
