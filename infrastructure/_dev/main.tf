@@ -47,13 +47,20 @@ module "ecs_module" {
 }
 
 # module "database_module" {
-#   source = "../modules/database"
+#   source                     = "../modules/database"
 #   database_security_group_id = [module.network_module.private_subnet_ids[0], module.network_module.private_subnet_ids[1]]
 #   database_subnet_group_name = module.network_module.database_security_group
- 
+#   availability_zone          = module.network_module.availability_zones[0]
+#   database_name              = "vayawallet-db-${var.environment}"
+#   db_username                = "VayaWallet_Admin"
+#   db_engine                  = "adminvayawalletdb"
+#   db_password                = "adminvayawalletdb"
+#   rds_multi_az               = true
+#   db_engine_version          = "15.00.4236.7.v1"
+#   db_instance_type           = "db.t3.small"
+#   db_subnet_group_name       = module.network_module.db_security_group_name
 # }
 
-module "acm" {
-  source = "../modules/acm"
-  domain_name = "vayawallet.com"
+module "roles_module" {
+  source = "../modules/roles"
 }
