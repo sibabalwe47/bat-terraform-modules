@@ -9,12 +9,15 @@ resource "random_id" "backend_id" {
  *  RDS
  */
 resource "aws_db_instance" "db_instance" {
-  db_name                = "${var.database_name}-db-instance-${random_id.backend_id.dec}"
-  engine                 = var.db_engine
-  engine_version         = var.db_engine_version
-  instance_class         = var.db_instance_type
-  username               = var.db_username
-  password               = var.db_password
+
+  db_name        = var.database_name
+  engine         = var.db_engine
+  engine_version = var.db_engine_version
+  instance_class = var.db_instance_type
+
+  username = jsondecode(data.aws_secretsmanager_secret_version.current_secrets.secret_string)["username"]
+  password = jsondecode(data.aws_secretsmanager_secret_version.current_secrets.secret_string)["password"]
+
   allocated_storage      = 20
   port                   = 1433
   skip_final_snapshot    = true
@@ -24,8 +27,28 @@ resource "aws_db_instance" "db_instance" {
   vpc_security_group_ids = var.database_security_group_id
 
 
-  # tags = {
-  #   Name = "${var.database_name}-db-instance-${random_id.backend_id.dec}"
-  # }
+  lifecycle {
+    prevent_destroy = true
+  }
+
+
 }
+#Creates Admin Credentials as a Secret
+resource "aws_secretsmanager_secret" "RdsAdminCreds" {
+  name = "RdsAdminCreds"
+}
+resource "aws_secretsmanager_secret_version" "RdsAdminCred" {
+  secret_id     = aws_secretsmanager_secret.RdsAdminCreds.id
+  secret_string = jsonencode(var.RdsAdminCreds)
+}
+data "aws_secretsmanager_secret" "env_secrets" {
+  name = "RdsAdminCreds"
+  depends_on = [
+    aws_secretsmanager_secret.RdsAdminCreds
+  ]
+}
+data "aws_secretsmanager_secret_version" "current_secrets" {
+  secret_id = data.aws_secretsmanager_secret.env_secrets.id
+}
+
 

@@ -63,3 +63,11 @@ variable "rds_multi_az" {
   type = bool
 }
 
+#Testing storing database username and password
+variable "RdsAdminCreds" {
+  default = {
+    username = "VayaWallet_Admin"
+    password = "P@ssW0rd"
+  }
+  type = map(string)
+}
