@@ -18,7 +18,7 @@ module "aws_backend_state" {
 module "network_module" {
   source   = "../modules/network"
   vpc_name = "vayawallet-${var.environment}"
-}
+} 
 
 module "ecr_module" {
   source              = "../modules/ecr"
@@ -46,9 +46,14 @@ module "ecs_module" {
   ecs_cluster_service_alb_target_group_arn = module.network_module.load_balancer_target_group_arn
 }
 
-module "database_module" {
-  source = "../modules/database"
-  database_security_group_id = [module.network_module.private_subnet_ids[0], module.network_module.private_subnet_ids[1]]
-  database_subnet_group_name = module.network_module.database_security_group
+# module "database_module" {
+#   source = "../modules/database"
+#   database_security_group_id = [module.network_module.private_subnet_ids[0], module.network_module.private_subnet_ids[1]]
+#   database_subnet_group_name = module.network_module.database_security_group
  
+# }
+
+module "acm" {
+  source = "../modules/acm"
+  domain_name = "vayawallet.com"
 }
