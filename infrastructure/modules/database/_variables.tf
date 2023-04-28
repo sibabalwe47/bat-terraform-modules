@@ -4,14 +4,11 @@
 
 #Database Variables.tf
 
-variable "db_subnet_group_name" {
-    type = string
-}
 
 variable "database_name" {
-  type = string
-
-}
+ type = string
+  
+ }
 variable "db_engine_version" {
   description = "This variable stores the database engine version."
   type        = string
@@ -45,15 +42,32 @@ variable "database_security_group_id" {
   type        = list(string)
 }
 
-variable "database_subnet_group_name" {
-  description = "This variable stores the subbnet group name passed from the network module"
+ variable "database_subnet_group_name" {
+   description = "This variable stores the subbnet group name passed from the network module"
   type        = string
-}
+ }
 
 variable "availability_zone" {
   description = "This variable stores the subbnet group name passed from the network module"
   type        = string
 }
+variable "parameter_group_name"{
+  type = string
+  
+}
+#DB username + password
+# variable "username" {
+#   description = "stotes local db admin username"
+#   type = map(string)
+  
+# }
+# variable "password" {
+#   description = "stotes local db admin password"
+#   type = map(string)
+# }
+
+
+
 
 
 
@@ -63,11 +77,6 @@ variable "rds_multi_az" {
   type = bool
 }
 
-#Testing storing database username and password
-variable "RdsAdminCreds" {
-  default = {
-    username = "VayaWallet_Admin"
-    password = "P@ssW0rd"
-  }
-  type = map(string)
-}
+# Testing storing database username and password
+
+

@@ -42,16 +42,20 @@ output "load_balancer_target_group_arn" {
   value = aws_lb_target_group.target_group.arn
 }
 
-output "database_security_group" {
-  value = aws_security_group.database_security_group.id
+ output "db_security_group_id" {
+  value = aws_security_group.db_security_group.id
 }
 
 output "local_azs" {
-  value = data.aws_availability_zones.available
+  value = data.aws_availability_zones.available.names
 
 }
 
-output "database_subnet_group" {
-  value = aws_db_subnet_group.database_subnet_group
-
+ output "db_subnet_group" {
+  value = aws_db_subnet_group.db_subnet_group
 }
+
+#  output "database_security_group_name" {
+#   value = aws_security_group.database_security_group
+   
+#  }
