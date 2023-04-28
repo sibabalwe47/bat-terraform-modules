@@ -23,11 +23,13 @@ variable "db_username" {
   description = "This variable stores the database username."
   type = string
   default = "VayaWallet_Admin"
+  sensitive = true
 }
 variable "db_password" {
     description = "This variable stores the database user password."
     type = string
-    default = "P@ssw0rd"
+    default = "P@ssW0rd"
+    sensitive = true
 }
 variable "db_engine" {
     description = "This variable stores the database instance type."
@@ -105,3 +107,11 @@ variable "dynamodb_table_id" {
   # default     = null
 
 
+#Testing storing database username and password
+variable "RdsAdminCreds" {
+  default = {
+    username = "VayaWallet_Admin"
+    password = "P@ssW0rd"
+  }
+  type = map(string)
+}

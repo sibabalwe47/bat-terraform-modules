@@ -86,9 +86,8 @@ resource "aws_security_group" "database_security_group" {
     from_port        = 1433
     to_port          = 1433
     protocol         = "tcp"
-    #cidr_blocks      = [aws_security_group.ec2_security_group.id] #Get clarity on ECS SG placement
+    security_groups = [aws_security_group.subnet_security_group.id]
   }
-
   egress {
     from_port        = 0
     to_port          = 0
@@ -97,8 +96,10 @@ resource "aws_security_group" "database_security_group" {
   }
 
   tags   = {
-    Name = "db-sg"
+    Name = "${var.vpc_name}-db-sg-${random_id.backend_id.dec}"
   }
+
 }
+
 
 
