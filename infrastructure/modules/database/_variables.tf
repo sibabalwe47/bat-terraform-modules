@@ -4,9 +4,6 @@
 
 #Database Variables.tf
 
-variable "db_subnet_group_name" {
-    type = string
-}
 
 variable "database_name" {
   type = string
@@ -67,7 +64,7 @@ variable "rds_multi_az" {
 variable "RdsAdminCreds" {
   default = {
     username = "VayaWallet_Admin"
-    password = "P@ssW0rd"
+    password = "VAYAYAWALLETDBROOTADMIN"
   }
   type = map(string)
 }
