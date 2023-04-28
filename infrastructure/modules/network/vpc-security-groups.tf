@@ -108,6 +108,7 @@ resource "aws_security_group" "database_security_group" {
 }
 
 
+
 resource "aws_security_group" "db_security_group" {
   name        = "private_subnet_security_group"
   description = "Allows traffic from instances in subnet."
