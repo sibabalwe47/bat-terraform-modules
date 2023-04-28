@@ -18,7 +18,7 @@ module "aws_backend_state" {
 module "network_module" {
   source   = "../modules/network"
   vpc_name = "vayawallet-${var.environment}"
-}
+} 
 
 module "ecr_module" {
   source              = "../modules/ecr"
@@ -46,11 +46,21 @@ module "ecs_module" {
   ecs_cluster_service_alb_target_group_arn = module.network_module.load_balancer_target_group_arn
 }
 
-module "database_module" {
-  source = "../modules/database"
-  database_security_group_id = [module.network_module.private_subnet_ids[0], module.network_module.private_subnet_ids[1]]
-  database_subnet_group_name = module.network_module.database_security_group
+# module "database_module" {
+#   source                     = "../modules/database"
+#   database_security_group_id = [module.network_module.private_subnet_ids[0], module.network_module.private_subnet_ids[1]]
+#   database_subnet_group_name = module.network_module.database_security_group
+#   availability_zone          = module.network_module.availability_zones[0]
+#   database_name              = "vayawallet-db-${var.environment}"
+#   db_username                = "VayaWallet_Admin"
+#   db_engine                  = "adminvayawalletdb"
+#   db_password                = "adminvayawalletdb"
+#   rds_multi_az               = true
+#   db_engine_version          = "15.00.4236.7.v1"
+#   db_instance_type           = "db.t3.small"
+#   db_subnet_group_name       = module.network_module.db_security_group_name
+# }
 
-
+module "roles_module" {
+  source = "../modules/roles"
 }
-

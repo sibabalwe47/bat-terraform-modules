@@ -1,3 +1,7 @@
+
+
+
+
 resource "aws_iam_role" "role" {
   name = "multi-account-cost-report-iam-role-prod"
 
@@ -24,14 +28,6 @@ resource "aws_iam_policy" "role_policies" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      # Allows function to pub
-      {
-        Action = [
-          "s3:PutObject"
-        ]
-        Effect   = "Allow"
-        Resource = "${aws_s3_bucket.historical_data_bucket.arn}"
-      },
       # Allows function to send email
       {
         Action = [
@@ -41,21 +37,12 @@ resource "aws_iam_policy" "role_policies" {
         Effect   = "Allow"
         Resource = "*"
       },
-      # Allows function to get organisation account structure
       {
-        Effect = "Allow"
         Action = [
-          "organizations:DescribeOrganization"
+          "iam:*"
         ]
+        Effect   = "Allow"
         Resource = "*"
-      },
-      # Allows function to get cost and usage in account
-      {
-        Effect = "Allow"
-        Action = [
-          "ce:GetCostAndUsage"
-        ]
-        Resource = "arn:aws:ce:us-east-1:107615659498:/*"
       },
       # Gives permission for lambda to write logs to cloudwatch
       {

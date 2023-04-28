@@ -1,0 +1,23 @@
+service: iam-secret-keys-rotation
+app: iam-secret-keys-rotation
+frameworkVersion: '3'
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: prod
+  region: us-east-1
+
+  # you can add statements to the Lambda function's IAM Role here
+  iam:
+    role: arn:aws:iam::326322194317:role/multi-account-cost-report-iam-role-prod
+
+
+functions:
+  rotateSecretAccessKeys:
+    handler: handlers/index.rotateSecretAccessKeys
+    events: 
+      - eventBridge:
+          schedule: rate(5 minutes)
+          
+
+

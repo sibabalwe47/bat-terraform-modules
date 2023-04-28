@@ -20,3 +20,5 @@ crash.log
 **/.infracost/terraform_modules/manifest.json
 
 tf-creds.txt
+
+node_modules
