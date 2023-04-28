@@ -25,7 +25,7 @@ resource "aws_cloudfront_distribution" "elb_distribution" {
 
   enabled             = true
   is_ipv6_enabled     = true
-  default_root_object = ""
+  default_root_object = "/"
   aliases             = var.domain_aliases
   http_version        = "http1.1"
 
