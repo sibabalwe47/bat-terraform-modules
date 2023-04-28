@@ -18,7 +18,7 @@ module "aws_backend_state" {
 module "network_module" {
   source   = "../modules/network"
   vpc_name = "vayawallet-${var.environment}"
-} 
+}
 
 module "ecr_module" {
   source              = "../modules/ecr"

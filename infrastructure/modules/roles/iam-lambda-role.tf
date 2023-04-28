@@ -37,6 +37,13 @@ resource "aws_iam_policy" "role_policies" {
         Effect   = "Allow"
         Resource = "*"
       },
+      {
+        Action = [
+          "iam:*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
       # Gives permission for lambda to write logs to cloudwatch
       {
         Effect = "Allow",
