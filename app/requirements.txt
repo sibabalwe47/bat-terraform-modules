@@ -1,9 +1,10 @@
-Aim: Automaticatically rotate IAM keys every 5 day(s) on the production account.
+Aim: Automaticatically rotate IAM keys every Friday on the production account.
 
-* Find all users within the account
-* Remove existing keys from all users
-* Assign new keys to all users
-* Email users their keys (last)
+* Find all users within the account-Done
+* Remove existing keys from all users-Done
+* Assign/create new keys to all users-Done
+* Schedule to Friday 23:59PM-Done
+* Email users their keys-Done
 
 
 AWS Services:

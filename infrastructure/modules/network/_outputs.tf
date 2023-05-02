@@ -48,7 +48,6 @@ output "load_balancer_target_group_arn" {
 
 output "local_azs" {
   value = data.aws_availability_zones.available.names
-  value = data.aws_availability_zones.available.names
 
 }
 

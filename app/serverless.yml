@@ -1,6 +1,6 @@
 service: iam-secret-keys-rotation
 app: iam-secret-keys-rotation
-frameworkVersion: '3'
+frameworkVersion: "3"
 provider:
   name: aws
   runtime: nodejs18.x
@@ -13,13 +13,13 @@ provider:
   #   plugins:
   # - serverless-offline
 
-
 functions:
   rotateSecretAccessKeys:
     handler: handlers/index.rotateSecretAccessKeys
-    events: 
+    events:
       - eventBridge:
-          schedule: rate(5 minutes)
-          
-
-
+          # schedule: rate(5 minutes)
+          schedule: cron(59 23 ? * FRI *)
+          # input:
+          #   time: "11:59 PM"
+          #   timezone: "Africa/Johannesburg"
