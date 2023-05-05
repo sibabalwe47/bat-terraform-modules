@@ -13,7 +13,7 @@ provider "aws" {
 
   # default_tags {
   #   tags = {
-  #     #Environment = "${var.environment}"
+  #     Environment = "${var.environment}"
   #     Owner   = "${var.owner}"
   #     Project = "${var.project}"
   #     Tool    = "${var.tool}"

@@ -16,7 +16,7 @@ resource "aws_ecs_service" "cluster_service" {
 
   network_configuration {
     subnets          = ["${var.ecs_cluster_service_subnet_ids[0]}", "${var.ecs_cluster_service_subnet_ids[1]}"]
-    assign_public_ip = true
+    assign_public_ip = false
     security_groups  = var.ecs_cluster_service_security_groups
   }
 }

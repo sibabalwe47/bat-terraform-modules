@@ -5,6 +5,7 @@ resource "aws_lb" "alb" {
   security_groups    = [aws_security_group.alb_security_group.id]
   subnets            = [aws_subnet.public_subnet[0].id, aws_subnet.public_subnet[1].id]
 
+
   lifecycle {
     create_before_destroy = true
   }
@@ -14,7 +15,20 @@ resource "aws_lb" "alb" {
     Name = "${var.vpc_name}-alb-${random_id.backend_id.dec}"
   }
 
+  # access_logs {
+  #   enabled = true
+  #   bucket  = aws_s3_bucket.alb_logs_bucket.bucket
+  #   prefix  = "alb-logs"
+  # }
+
 }
+
+# resource "aws_s3_bucket" "alb_logs_bucket" {
+#   bucket = "my-alb-logs-bucket"
+#   # acl    = "private"
+
+# }
+
 
 resource "aws_lb_listener" "http_listener" {
   load_balancer_arn = aws_lb.alb.arn

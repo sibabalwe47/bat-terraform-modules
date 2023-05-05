@@ -51,6 +51,14 @@ variable "availability_zone" {
   description = "This variable stores the subbnet group name passed from the network module"
   type        = string
 }
+
+# data "aws_availability_zones" "available" {}
+
+# locals {
+#   azs = data.aws_availability_zones.available.names
+# }
+
+
 variable "parameter_group_name"{
   type = string
   
@@ -135,3 +143,7 @@ variable "dynamodb_table_id" {
 # Testing storing database username and password
 
 
+variable "region" {
+  type    = string
+  default = "us-east-1"
+}
