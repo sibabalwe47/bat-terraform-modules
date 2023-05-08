@@ -54,6 +54,8 @@ resource "aws_db_snapshot" "db_snapshot" {
   depends_on             = [aws_kms_key.database_kms_key]
 }
 
+# B7T6J8K7A8T3E7KC
+
 /*
  *  Copy of Unencrypted Snapshot with Encryption Enabled
  */

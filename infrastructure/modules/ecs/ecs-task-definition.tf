@@ -7,7 +7,12 @@ resource "aws_ecs_task_definition" "cluster_task_definition" {
       cpu       = "${var.ecs_cluster_task_definition_container_cpu}"
       memory    = "${var.ecs_cluster_task_definition_container_memory}"
       essential = true
-      readonly = true
+      mount_points = [
+
+        { readonly     = true
+          sourceVolume = "root"
+
+      }]
       portMappings = [
         {
           containerPort = "${var.ecs_cluster_task_definition_container_port}"
